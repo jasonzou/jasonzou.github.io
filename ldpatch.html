@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html prefix="bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#" content="en" property="dcterms:language" about="" typeof="bibo:Document " dir="ltr" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Linked Data Patch Format</title>
+    <meta charset="utf-8">
+    
+    
+  <style>/*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+
+/* --- INLINES --- */
+em.rfc2119 { 
+    text-transform:     lowercase;
+    font-variant:       small-caps;
+    font-style:         normal;
+    color:              #900;
+}
+
+h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
+h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
+    border: none;
+}
+
+dfn {
+    font-weight:    bold;
+}
+
+a.internalDFN {
+    color:  inherit;
+    border-bottom:  1px solid #99c;
+    text-decoration:    none;
+}
+
+a.externalDFN {
+    color:  inherit;
+    border-bottom:  1px dotted #ccc;
+    text-decoration:    none;
+}
+
+a.bibref {
+    text-decoration:    none;
+}
+
+cite .bibref {
+    font-style: normal;
+}
+
+code {
+    color:  #C83500;
+}
+
+/* --- TOC --- */
+.toc a, .tof a {
+    text-decoration:    none;
+}
+
+a .secno, a .figno {
+    color:  #000;
+}
+
+ul.tof, ol.tof {
+    list-style: none outside none;
+}
+
+.caption {
+    margin-top: 0.5em;
+    font-style:   italic;
+}
+
+/* --- TABLE --- */
+table.simple {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    border-bottom:  3px solid #005a9c;
+}
+
+.simple th {
+    background: #005a9c;
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+}
+
+.simple th[scope="row"] {
+    background: inherit;
+    color:  inherit;
+    border-top: 1px solid #ddd;
+}
+
+.simple td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+    background: #f0f6ff;
+}
+
+/* --- DL --- */
+.section dd > p:first-child {
+    margin-top: 0;
+}
+
+.section dd > p:last-child {
+    margin-bottom: 0;
+}
+
+.section dd {
+    margin-bottom:  1em;
+}
+
+.section dl.attrs dd, .section dl.eldef dd {
+    margin-bottom:  0;
+}
+
+@media print {
+    .removeOnSave {
+        display: none;
+    }
+}
+</style><style>/* --- EXAMPLES --- */
+div.example-title {
+    min-width: 7.5em;
+    color: #b9ab2d;
+}
+div.example-title span {
+    text-transform: uppercase;   
+}
+aside.example, div.example, div.illegal-example {
+    padding: 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+div.illegal-example { color: red }
+div.illegal-example p { color: black }
+aside.example, div.example {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+    border-color: #e0cb52;
+    background: #fcfaee;    
+}
+
+aside.example div.example {
+    border-left-width: .1em;
+    border-color: #999;
+    background: #fff;
+}
+aside.example div.example div.example-title {
+    color: #999;
+}
+</style><link href="ldpatch_files/W3C-ED.css" rel="stylesheet"><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--></head>
+  <body id="respecDocument" role="document" class="h-entry"><div id="respecHeader" role="contentinfo" class="head">
+  <p>
+    
+      <a href="http://www.w3.org/"><img src="ldpatch_files/w3c_home.png" alt="W3C" width="72" height="48"></a>
+    
+  </p>
+  <h1 class="title p-name" id="title" property="dcterms:title">Linked Data Patch Format</h1>
+  
+  <h2 id="w3c-editor-s-draft-19-august-2014" property="dcterms:issued" datatype="xsd:dateTime" content="2014-08-19T15:59:37.000Z"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time class="dt-published" datetime="2014-08-19">19 August 2014</time></h2>
+  <dl>
+    
+      <dt>This version:</dt>
+      <dd><a class="u-url" href="https://dvcs.w3.org/hg/ldpwg/raw-file/ldpatch/ldpatch.html">https://dvcs.w3.org/hg/ldpwg/raw-file/ldpatch/ldpatch.html</a></dd>
+      <dt>Latest published version:</dt>
+      <dd><a href="http://www.w3.org/TR/ld-patch/">http://www.w3.org/TR/ld-patch/</a></dd>
+    
+    
+      <dt>Latest editor's draft:</dt>
+      <dd><a href="https://dvcs.w3.org/hg/ldpwg/raw-file/ldpatch/ldpatch.html">https://dvcs.w3.org/hg/ldpwg/raw-file/ldpatch/ldpatch.html</a></dd>
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    <dt>Editors:</dt>
+    <dd class="p-author h-card vcard" rel="bibo:editor" inlist=""><span typeof="foaf:Person"><a class="u-url url p-name fn" rel="foaf:homepage" property="foaf:name" content="Alexandre Bertails" href="http://bertails.org/">Alexandre Bertails</a>, <a rel="foaf:workplaceHomepage" class="p-org org h-org h-card" href="http://www.pellucid.com/">Pellucid Analytics</a>, <span class="ed_mailto"><a class="u-email email" rel="foaf:mbox" href="mailto:alexandre@bertails.org">alexandre@bertails.org</a></span></span>
+</dd>
+<dd class="p-author h-card vcard" rel="bibo:editor" inlist=""><span typeof="foaf:Person"><a class="u-url url p-name fn" rel="foaf:homepage" property="foaf:name" content="Pierre-Antoine Champin" href="http://liris.cnrs.fr/%7Epchampin/en/">Pierre-Antoine Champin</a>, <a rel="foaf:workplaceHomepage" class="p-org org h-org h-card" href="http://www.universite-lyon.fr/">Université de Lyon</a>, <span class="ed_mailto"><a class="u-email email" rel="foaf:mbox" href="mailto:pchampin@liris.cnrs.fr">pchampin@liris.cnrs.fr</a></span></span>
+</dd>
+<dd class="p-author h-card vcard" rel="bibo:editor" inlist=""><span typeof="foaf:Person"><a class="u-url url p-name fn" rel="foaf:homepage" property="foaf:name" content="Andrei Sambra" href="https://deiu.rww.io/profile/card#me">Andrei Sambra</a>, <a rel="foaf:workplaceHomepage" class="p-org org h-org h-card" href="http://web.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <span class="ed_mailto"><a class="u-email email" rel="foaf:mbox" href="mailto:asambra@mit.edu">asambra@mit.edu</a></span></span>
+</dd>
+
+    
+    
+  </dl>
+  
+  
+  
+  
+    
+      <p class="copyright">
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> ©
+        2014
+        
+        <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup>
+        (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
+        <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>,
+        <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), 
+        
+        All Rights Reserved.
+        
+        <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and
+        
+          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
+        
+        rules apply.
+      </p>
+    
+  
+  <hr>
+</div>
+    <section rel="bibo:Chapter" resource="#abstract" typeof="bibo:Chapter" datatype="" property="dcterms:abstract" class="introductory" id="abstract"><h2 id="h2_abstract" role="heading" aria-level="1">Abstract</h2>
+      <p>
+Linked Data Patch Format (LD Patch) defines a language for expressing a 
+sequence of operations to apply to a RDF Graph; it is suitable for use 
+with the HTTP PATCH method. The "text/ldpatch" media type is used to 
+identify such Patch documents.
+      </p>
+    </section><section rel="bibo:Chapter" resource="#sotd" typeof="bibo:Chapter" id="sotd" class="introductory"><h2 id="h2_sotd" role="heading" aria-level="1">Status of This Document</h2>
+  
+    
+      
+        <p>
+          <em>This section describes the status of this document at the time of its publication.
+          Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the
+          latest revision of this technical report can be found in the <a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at
+          http://www.w3.org/TR/.</em>
+        </p>
+        
+      <p>
+        @@You need to have a custom SotD paragraph. Maybe give a succinct description of your spec's
+        status.@@
+      </p>
+    
+        <p>
+          This document was published by the <a href="http://www.w3.org/2012/ldp">Linked Data Platform Working Group</a> as an Editor's Draft.
+          
+          
+            If you wish to make comments regarding this document, please send them to 
+            <a href="mailto:public-ldp-comments@w3.org">public-ldp-comments@w3.org</a> 
+            (<a href="mailto:public-ldp-comments-request@w3.org?subject=subscribe">subscribe</a>,
+            <a href="http://lists.w3.org/Archives/Public/public-ldp-comments/">archives</a>).
+          
+          
+          
+          
+            All comments are welcome.
+          
+        </p>
+        
+        
+          <p>
+            Publication as an Editor's Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr>
+            Membership. This is a draft document and may be updated, replaced or obsoleted by other
+            documents at any time. It is inappropriate to cite this document as other than work in
+            progress.
+          </p>
+        
+        
+        
+        <p>
+          
+            This document was produced by a group operating under the 
+            <a id="sotd_patent" about="" rel="w3p:patentRules" href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 <abbr title="World Wide Web Consortium">W3C</abbr> Patent
+            Policy</a>.
+          
+          
+          
+            
+              <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/" rel="disclosure">public list of any patent
+              disclosures</a> 
+            
+            made in connection with the deliverables of the group; that page also includes
+            instructions for disclosing a patent. An individual who has actual knowledge of a patent
+            which the individual believes contains
+            <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential
+            Claim(s)</a> must disclose the information in accordance with
+            <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section
+            6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>.
+          
+          
+        </p>
+        
+          <p>This document is governed by the <a id="w3c_process_revision" href="http://www.w3.org/2014/Process-20140801/">1 August 2014 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>.
+          </p>
+        
+        
+      
+    
+  
+</section><section id="toc"><h2 id="h2_toc" role="heading" aria-level="1" class="introductory">Table of Contents</h2><ul id="respecContents" role="directory" class="toc"><li class="tocline"><a class="tocxref" href="#introduction"><span class="secno">1. </span>Introduction</a></li><li class="tocline"><a class="tocxref" href="#language-features"><span class="secno">2. </span>LD Patch format</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#prefixes"><span class="secno">2.1 </span><span title="Prefixes">Prefixes</span></a></li><li class="tocline"><a class="tocxref" href="#node-matching-semantics"><span class="secno">2.2 </span><span title="Node_matching_semantics">Node matching semantics</span></a></li><li class="tocline"><a class="tocxref" href="#pathological-graph"><span class="secno">2.3 </span><span title="Pathological_graph">Pathological graph</span></a></li><li class="tocline"><a class="tocxref" href="#path-expression"><span class="secno">2.4 </span><span title="Path_expression">Path expression</span></a></li><li class="tocline"><a class="tocxref" href="#bind-statement"><span class="secno">2.5 </span><span title="Bind">Bind</span></a></li><li class="tocline"><a class="tocxref" href="#add-statement"><span class="secno">2.6 </span><span title="Add">Add</span></a></li><li class="tocline"><a class="tocxref" href="#delete-statement"><span class="secno">2.7 </span><span title="Delete">Delete</span></a></li><li class="tocline"><a class="tocxref" href="#update-list-statement"><span class="secno">2.8 </span><span title="UpdateList">UpdateList</span></a></li></ul></li><li class="tocline"><a class="tocxref" href="#concrete-syntax"><span class="secno">3. </span>Concrete Syntax</a></li><li class="tocline"><a class="tocxref" href="#abstract-syntax"><span class="secno">4. </span>Abstract Syntax</a></li><li class="tocline"><a class="tocxref" href="#operational-semantics"><span class="secno">5. </span>Operational Semantics</a></li></ul></section>
+    
+    
+    
+    <section rel="bibo:Chapter" resource="#introduction" typeof="bibo:Chapter" class="informative" id="introduction">
+      <!--OddPage--><h2 id="h2_introduction" role="heading" aria-level="1"><span class="secno">1. </span>Introduction</h2><p><em>This section is non-normative.</em></p>
+      <p>
+Linked Data "describes a method of publishing structured data so that it
+ can be interlinked and become more useful. It builds upon standard Web 
+technologies such as HTTP, RDF and URIs, but rather than using them to 
+serve web pages for human readers, it extends them to share information 
+in a way that can be read automatically by computers. This enables data 
+from different sources to be connected and queried." (source Wikipedia).
+      </p>
+      <p>
+This document defines the Linked Data Patch Format (LD Patch), a format 
+for describing changes to apply to Linked Data. It is suitable for use 
+with HTTP PATCH [@@RFC5789], a method to perform partial modifications 
+to Web resources. The "text/ldpatch" media type is used to identify such
+ LD Patch documents.
+      </p>
+      <p>
+An instance of the LD Patch language (or LD Patch document) defines a 
+list of operations to be performed against an RDF Graph, namely the 
+addition or removal of RDF triples in this graph.
+      </p>
+
+      <p id="relation-sparql-update">
+        The LD Patch format described in this document should be seen as
+ an "assembly language" for updating RDF Graphs. It is the intention to 
+confine its expressive power to an RDF diff with minimal support for 
+blank nodes. For more powerful operations on RDF Graphs and Quad Stores,
+ the LDP WG recommends the reader to consider <a href="http://www.w3.org/TR/sparql11-update/">SPARQL Update</a>.
+      </p>
+
+      <!--p>
+In fact, LD Patch _could_ have been defined as a subset of SPARQL
+Update, even though the group had decided not to depend on SPARQL as a
+whole. This option was considered and we decided it did not provide
+any substancial advantage, while bringing some caveats: a compatible
+concrete syntax would have actually shared a lot of similar production
+rules than in this proposal, as most would be similar to Turtle's; but
+unlike SPARQL, the runtime semantics does **not** need to depend on
+(intermediate) result sets, which simplifies implementations and
+removes [incidental
+complexity](https://en.wikipedia.org/wiki/Accidental_complexity). In
+summary, the only advantage would have been to have a familiar syntax
+for those coming from SPARQL, but with a different runtime semantics
+even, which could have been confusing, even if compatible.
+
+Furthermore SPARL has no built-in support for RDF collections, which
+makes them cumbersome to handle with that language (or any subset of
+it), all the more that RDF collections make an intensive use of blank
+nodes. We made the choice to provide opertions dedicated to RDF
+collections, both for easing their manipulation and for opening the
+way to specific optimizations in RDF stores that treat them specially.
+
+      </p-->
+
+      <h2 id="intro-example">Example</h2>
+
+      <p>
+        The following RDF Graph will be used as an example through this 
+specification. It describes the relation between a person named Tim 
+Berners-Lee (denoted by <code>&lt;http://example.org/timbl#&gt;</code>) and two events he attended.
+      </p>
+      <div class="example"><div class="example-title"><span>Example 1</span></div><pre class="example">@prefix schema: &lt;http://schema.org/&gt; .
+@prefix profile: &lt;http://ogp.me/ns/profile#&gt; .
+@prefix ex: &lt;http://example.org/vocab#&gt; .
+@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+&lt;http://example.com/timbl#&gt; a schema:Person ;
+  schema:alternateName "TimBL" ;
+  profile:first_name "Tim" ;
+  profile:last_name "Berners-Lee" ;
+  schema:workLocation [ schema:name "W3C/MIT" ] ;
+  schema:attendee _:b1, _:b2 ;
+  ex:preferredLanguages ( "en" "fr" ).
+
+_:b1 schema:name "F2F5 - Linked Data Platform" ;
+  schema:url &lt;https://www.w3.org/2012/ldp/wiki/F2F5&gt; .
+
+_:b2 a schema:Event ;
+  schema:name "TED 2009" ;
+  schema:startDate "2009-02-04" ;
+  schema:url &lt;http://conferences.ted.com/TED2009/&gt; .</pre></div>
+      <p>
+The following is an example HTTP Patch request, conveying an LD Patch document:
+      </p>
+      <div class="example"><div class="example-title"><span>Example 2</span></div><pre class="example">PATCH /timbl HTTP/1.1
+Host: example.org
+Content-Length: 478
+Content-Type: text/ldpatch
+If-Match: "abc123"
+
+@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix schema: &lt;http://schema.org/&gt; .
+@prefix profile: &lt;http://ogp.me/ns/profile#&gt; .
+@prefix ex: &lt;http://example.org/vocab#&gt; .
+
+Delete &lt;#&gt; profile:first_name "Tim" .
+Add    &lt;#&gt; profile:first_name "Timothy" .
+
+UpdateList &lt;#&gt; ex:preferredLanguages 1&gt;2 ( "fr-CH" ) .
+
+Bind ?event &lt;#&gt; /schema:attendee[/schema:url = &lt;https://www.w3.org/2012/ldp/wiki/F2F5&gt;]  .
+Add ?event rdf:type schema:Event .
+
+Bind ?ted &lt;http://conferences.ted.com/TED2009/&gt; /-schema:url! .
+Delete ?ted schema:startDate "2009-02-04".
+Add ?ted schema:location _:loc .
+Add _:loc schema:name "Long Beach, California" .
+Add _:loc schema:geo _:geo .
+Add _:geo schema:latitude "33.7817" .
+Add _:geo schema:longitude "-118.2054" .</pre></div>
+      <p>
+This example introduces most features of the LD Patch format: @prefix and prefixed names, the <a href="#dfn-add" title="Add" class="tref internalDFN">Add</a>, <a href="#dfn-delete" title="Delete" class="tref internalDFN">Delete</a> and <a href="#dfn-updatelist" title="UpdateList" class="tref internalDFN">UpdateList</a> operations, the <a href="#dfn-bind" title="Bind" class="tref internalDFN">Bind</a>-ing mechanism and blank node creation.
+      </p>
+      <p>
+The following is the resulting (patched) document.
+      </p>
+      <div class="example"><div class="example-title"><span>Example 3</span></div><pre class="example">@prefix schema: &lt;http://schema.org/&gt; .
+@prefix profile: &lt;http://ogp.me/ns/profile#&gt; .
+@prefix ex: &lt;http://example.org/vocab#&gt; .
+
+&lt;http://example.com/timbl#&gt; a schema:Person ;
+  schema:alternateName "TimBL" ;
+  profile:first_name "Timothy" ;
+  profile:last_name "Berners-Lee" ;
+  schema:workLocation [ schema:name "W3C/MIT" ] ;
+  schema:attendee _:b1, _:b2 ;
+  ex:preferredLanguages ( "en" "fr-CH" ).
+
+_:b1 a schema:Event ;
+  schema:name "F2F5 - Linked Data Platform" ;
+  schema:url &lt;https://www.w3.org/2012/ldp/wiki/F2F5&gt; .
+
+_:b2 a schema:Event ;
+  schema:name "TED 2009" ;
+  schema:url &lt;http://conferences.ted.com/TED2009/&gt; ;
+  schema:location [
+    schema:name "Long Beach, California";
+    schema:geo [ schema:latitude "33.7817" ; schema:longitude "-118.2054" ]
+  ] .</pre></div>
+
+
+    </section>
+
+
+       
+    <section rel="bibo:Chapter" resource="#language-features" typeof="bibo:Chapter" class="informative" id="language-features">
+      <!--OddPage--><h2 id="h2_language-features" role="heading" aria-level="1"><span class="secno">2. </span>LD Patch format</h2><p><em>This section is non-normative.</em></p>
+      <p>
+A LD Patch document is made of a prologue and a list of statements, 
+where the order is relevant. The prologue declares a numver of <a href="#dfn-prefixes" title="prefixes" class="tref internalDFN">prefixes</a>
+ used to abbreviate URIs. Then each statement either binds a variable to
+ a matching node, or defines a modification on the graph.
+      </p>
+      <p>
+
+      </p>
+      <section rel="bibo:Chapter" resource="#prefixes" typeof="bibo:Chapter" id="prefixes">
+        <h3 id="h3_prefixes" role="heading" aria-level="2"><span class="secno">2.1 </span><dfn id="dfn-prefixes" title="Prefixes">Prefixes</dfn></h3>
+        <p>
+LD Patch offers the possibility to abbreviate URIs by using Turtle's <i>@prefix</i>
+ directive that allows declaring a short prefix name for a long prefix 
+of repeated URIs. This is useful for many RDF vocabularies that are all 
+defined in nearby namespace URIs, possibly using XML's namespace 
+mechanism that works in a similar fashion.
+        </p>
+        <p>
+Once a prefix such as <code>@prefix foo: &lt;http://example.org/ns#&gt;</code> is defined, any mention of a URI later in the document may use a <a href="#dfn-prefixedname" title="PrefixedName" class="tref internalDFN">PrefixedName</a> that starts with <code>foo:</code> to stand for the longer URI. So for example, the <a href="#dfn-prefixedname" title="PrefixedName" class="tref internalDFN">PrefixedName</a> <code>foo:bar</code> is a shorthand for the URI <code>&lt;http://example.org/ns#bar&gt;</code>.
+        </p>
+      </section>
+
+      <section rel="bibo:Chapter" resource="#node-matching-semantics" typeof="bibo:Chapter" id="node-matching-semantics">
+        <h3 id="h3_node-matching-semantics" role="heading" aria-level="2"><span class="secno">2.2 </span><dfn id="dfn-node_matching_semantics" title="Node_matching_semantics">Node matching semantics</dfn></h3>
+        <p>
+LD Patch borrows much of its syntax to Turtle (@@@ref) and SPARQL 
+(@@@ref) for describing nodes. IRIs (either abbreviated or not) and 
+literals represent the corresponding node in the graph being patched. 
+Blank nodes, on the other hand, pose a problem, as they have no global 
+identifier. Indeed, blank node identifiers have their scope limited to 
+the document in which they appear. As a consequence, whenever a blank 
+node identifiers appears in an LD Patch document, it is understood to 
+denote a <em>fresh</em> blank node, that needs to be created in the patched RDF graph. They cannot interfere with existing blank nodes in the graph.
+        </p>
+        <p>
+          In order to be able to address blank nodes already present in the graph, LD Patch has two mechanisms: <a href="#dfn-bind" title="Bind" class="tref internalDFN">Bind</a>ing a variable to a blank node reachable with a <a href="#dfn-path_expression" title="path_expression" class="tref internalDFN">path expression</a>, and <a href="#dfn-updatelist" title="UpdateList" class="tref internalDFN">UpdateList</a>
+ to deal with those blank nodes that constitute RDF collections. There 
+are cases where those mechanisms will not be able to unambiuously adress
+ a given blank node, but those cases are deemed <a href="#pathological-graph">pathological</a>, and out of the scope of this specification.
+        </p>
+      </section>
+
+
+      <section rel="bibo:Chapter" resource="#pathological-graph" typeof="bibo:Chapter" id="pathological-graph">
+        <h3 id="h3_pathological-graph" role="heading" aria-level="2"><span class="secno">2.3 </span><dfn id="dfn-pathological_graph" title="Pathological_graph">Pathological graph</dfn></h3>
+        <p>
+          Given an RDF graph <em>G</em>, a blank node <em>b</em> is said to be unambiguous in <em>G</em> if there exists a couple <em>(n, p)</em> where
+        </p><ul>
+          <li><em>n</em> is a URI or a literal</li>
+          <li><em>p</em> is an LD Path expression</li>
+        </ul>
+        such that applying <em>p</em> to <em>n</em> results in a unique <em>{b}</em>.
+        <p></p>
+
+        <p>
+It is easy to see that only the unambiguous blank nodes of a graph can be handled in LD Patch.
+        </p>
+
+        <p>
+Consider for example the following graph:
+        </p>
+
+      <div class="example"><div class="example-title"><span>Example 4</span></div><pre class="example">&lt;#&gt; foaf:name "Alice" ; foaf:knows _:b1, _:b2 .
+_:b1 a foaf:Person .
+_:b2 a foaf:Person ; schema:workLocation _:b3 .
+_:b3 schema:name "W3C/MIT" .</pre></div>
+
+      <p>
+        The blank nodes <code>_:b2</code> and <code>_:b3</code> are unambiguous (they can for example be reached unambiguoulsy from the literal <code>"<abbr title="World Wide Web Consortium">W3C</abbr>/<abbr title="Massachusetts Institute of Technology">MIT</abbr>"</code>). The blank node <code>_:b1</code>, on the other hand, is ambigious as all path expressions that can can match it would also match <code>_:b2</code>.
+      </p>
+
+      <!-- p>
+        This kind of node is not particularly interesting in RDF, as its presence does not change the semantics of the graph. Indeed, if we remove <code>_:b2</code> and all its triples from the graph above, the resulting graph would be semantically equivalent to the original graph.
+      </p-->
+
+      <p>
+        Another example is a graph containing only blank nodes. All its 
+nodes are therefore ambiguous as they can not be reached from a URI or a
+ literal. Such a graph is not interesting in the context of linked data 
+as it contains no URI to link to or from it.
+      </p>
+
+      <p>
+        Therefore, ambiguous blank nodes are considered a pathological 
+case in the context of LDP, and so the fact that they cannot be coped 
+with in LD Patch is deemed acceptable. Furthermore, their presence in a 
+graph does not prevent the other nodes of that graph to be handled by LD
+ Patch.
+      </p>
+
+      </section>
+
+      <section rel="bibo:Chapter" resource="#path-expression" typeof="bibo:Chapter" id="path-expression">
+        <h3 id="h3_path-expression" role="heading" aria-level="2"><span class="secno">2.4 </span><dfn id="dfn-path_expression" title="Path_expression">Path expression</dfn></h3>
+        <p>
+LD Patch uses path expressions to describe possible routes through a 
+graph between two graph nodes. The main goal is to allow addressing a 
+blank node by “walking” the arcs of the graph from an already identified
+ node. A path is composed by a number of steps, which can be of three 
+kinds:
+        </p>
+        <ul>
+          <li>A <a href="#dfn-stepforward" title="StepForward" class="tref internalDFN">StepForward</a> is defined by a URI, and consists in following outgoing arcs having that URI as their predicate.</li>
+          <li>A <a href="#dfn-stepbackward" title="StepBackward" class="tref internalDFN">StepBackward</a>
+ is defined by a URI preceded with the minus ("-") sign, and consists in
+ following incoming arcs having that URI as their predicate.</li>
+          <li>A <a href="#dfn-stepat" title="StepAt" class="tref internalDFN">StepAt</a> is defined by an integer <i>n</i>, and consists in following <i>n</i> <code>rdf:rest</code> arcs and one <code>rdf:first</code> arc in order to reach the corresponding member of an RDF collection.</li>
+        </ul>
+        <p>
+Note that each step can, in general, result in <em>several</em> matching nodes, as a given node can have several (incoming or outgoing) arcs with the same predicate.
+        </p>
+        <p>
+A Path may also contains <a href="#dfn-constraint" title="Constraint" class="tref internalDFN">Constraint</a>s, which are of two kinds:
+        </p>
+        <ul>
+          <li>A unicity constraint, described by the <em>bang</em> ("!") character, ensures that the result of the path so far contains exactly one node.</li>
+          <li>A <a href="#dfn-filter" title="filter" class="tref internalDFN">filter</a>,
+ consisting of a path in square brackets ("[", "]"), keeps only from the
+ matching nodes so far those that “satisfy” the enclosed path, i.e. 
+those from which the enclosed path reaches at least one node.</li>
+          <li>Additionally, the path in a <a href="#dfn-filter" title="filter" class="tref internalDFN">filter</a> can be followed by the equal ("=") sign and a <a href="#dfn-value" title="Value" class="tref internalDFN">Value</a>. In that case, only the node for which that particular value is reached through the enclosed path are kept.</li>
+        </ul>
+        <p>
+The path below (taken from our running example) will look for all the 
+events attended by the starting node, and keep only those  having <code>&lt;http://conferences.ted.com/TED2009/&gt;</code> as their URL.
+        </p><div class="example"><div class="example-title"><span>Example 5</span></div><pre class="example">/schema:attendee[/schema:url = &lt;http://conferences.ted.com/TED2009/&gt;]</pre></div>
+        <p></p>
+      </section>
+
+      <section rel="bibo:Chapter" resource="#bind-statement" typeof="bibo:Chapter" id="bind-statement">
+        <h3 id="h3_bind-statement" role="heading" aria-level="2"><span class="secno">2.5 </span><dfn id="dfn-bind" title="Bind">Bind</dfn></h3>
+        <p>
+The Bind operation is used to create a new variable by binding or 
+assigning an RDF Term to the variable. The bound variable has a global 
+scope. Use of a given variable name anywhere in an LD Patch document 
+identifies the same variable, although variables can be overriden in 
+subsequent Bound statements. Following the example above, the Bind 
+operation creates a new variable called <code>event</code>, starting from the RDF Term <code>&lt;#&gt;</code> and following the path expression <code>/schema:attendee[/schema:url = &lt;http://conferences.ted.com/TED2009/&gt;]</code> in order to identify the RDF Term to which this variable will be bound to -- i.e. <code>_:b2</code>.
+        </p><div class="example"><div class="example-title"><span>Example 6</span></div><pre class="example">Bind ?event &lt;#&gt; /schema:attendee[/schema:url = &lt;http://conferences.ted.com/TED2009/&gt;] .</pre></div>
+        <p></p>
+        <p>
+The Bind operation is defined by three components: <a href="#dfn-var" title="Var" class="tref internalDFN">Var</a>, <a href="#dfn-value" title="Value" class="tref internalDFN">Value</a> and <a href="#dfn-path" title="Path" class="tref internalDFN">Path</a>, the last component being optional.
+        </p>
+        <p>
+<a href="#dfn-var" title="Var" class="tref internalDFN">Var</a> contains a unique name for the new variable. Variables are prefixed by "?"; the "?" character is not part of the variable name.
+        </p>
+        <p>
+<a href="#dfn-value" title="Value" class="tref internalDFN">Value</a> is the RDF Term that will be used as starting point when following the path expression.
+        </p>
+        <p>
+<a href="#dfn-path" title="Path" class="tref internalDFN">Path</a> is the expression that is used to identify the RDF Term to which the Variable will be bound. It is comprised of <a href="#dfn-step" title="Step" class="tref internalDFN">Step</a>(s) and/or <a href="#dfn-constraint" title="Constraint" class="tref internalDFN">Constraint</a>(s).
+        </p>
+      </section>
+
+      <section rel="bibo:Chapter" resource="#add-statement" typeof="bibo:Chapter" id="add-statement">
+        <h3 id="h3_add-statement" role="heading" aria-level="2"><span class="secno">2.6 </span><dfn id="dfn-add" title="Add">Add</dfn></h3>
+        <p>
+The Add operation is used to add or append new RDF triples to the 
+existing graph. To add new RDF triple, the operation requires a <a href="#dfn-subject" title="Subject" class="tref internalDFN">Subject</a>, a <a href="#dfn-predicate" title="Predicate" class="tref internalDFN">Predicate</a> and either an <a href="#dfn-object" title="Object" class="tref internalDFN">Object</a> or a <a href="#dfn-list" title="List" class="tref internalDFN">List</a>.
+        </p><div class="example"><div class="example-title"><span>Example 7</span></div><pre class="example">Add &lt;#&gt; profile:first_name "Timothy" .
+
+Add ?event rdf:type schema:Event .</pre></div>
+When the third component is an <a href="#dfn-object" title="Object" class="tref internalDFN">Object</a>, then a single statement will be added. On the other hand, when it is a <a href="#dfn-list" title="List" class="tref internalDFN">List</a>,
+ all the intermediate blank nodes and corresponding statements will be 
+added to construct a well formed RDF collection (@@@ref to RDF-Schema) 
+(in addition to the triple with the given <a href="#dfn-subject" title="Subject" class="tref internalDFN">Subject</a>, <a href="#dfn-predicate" title="Predicate" class="tref internalDFN">Predicate</a> and that collection as the object).
+        <p></p>
+      </section>
+
+      <section rel="bibo:Chapter" resource="#delete-statement" typeof="bibo:Chapter" id="delete-statement">
+        <h3 id="h3_delete-statement" role="heading" aria-level="2"><span class="secno">2.7 </span><dfn id="dfn-delete" title="Delete">Delete</dfn></h3>
+        <p>
+The Delete operation is used to remove a single RDF triple from the 
+existing graph. The syntax for the Delete operation requires a <a href="#dfn-subject" title="Subject" class="tref internalDFN">Subject</a>, a <a href="#dfn-predicate" title="Predicate" class="tref internalDFN">Predicate</a> and an <a href="#dfn-object" title="Object" class="tref internalDFN">Object</a>.
+        </p><div class="example"><div class="example-title"><span>Example 8</span></div><pre class="example">Delete &lt;#&gt; profile:first_name "Tim" .
+
+Delete ?ted schema:startDate "2009-02-04".</pre></div>
+        <p></p>
+      </section>
+
+      <section rel="bibo:Chapter" resource="#update-list-statement" typeof="bibo:Chapter" id="update-list-statement">
+        <h3 id="h3_update-list-statement" role="heading" aria-level="2"><span class="secno">2.8 </span><dfn id="dfn-updatelist" title="UpdateList">UpdateList</dfn></h3>
+        <p>
+The UpdateList operation is used to update the members of an RDF 
+collection (@@@ref). That collection is supposed to be the object of a 
+triple, specified by its <a href="#dfn-subject" title="Subject" class="tref internalDFN">Subject</a> and <a href="#dfn-predicate" title="Predicate" class="tref internalDFN">Predicate</a>. A <a href="#dfn-slice" title="Slice" class="tref internalDFN">Slice</a> specification then describes which members (if any) of the collections are affected by the operation, and then a <a href="#dfn-list" title="List" class="tref internalDFN">List</a>
+ of new members is provided. In the example below, UpdateList is used to
+ replace the second member of a collection by the literal "fr-CH".
+        </p><div class="example"><div class="example-title"><span>Example 9</span></div><pre class="example">UpdateList &lt;#&gt; ex:preferredLanguages 1&gt;2 ( "fr-CH" ) .</pre></div>
+        <p></p>
+        <p>
+UpdateList works in a similar way to <a href="https://docs.python.org/3/reference/expressions.html#slicings">slicing in Python</a>
+ or similar languages. In general, it replaces a part (“slice”) of a 
+list by another list. To remove members, one can replace them by an 
+empty list. To insert new values between two members, one can set a non 
+empty list to the empty slice comprised between those two members.
+        </p>
+
+        <p>
+In LD Patch, a slice is described by two positive integers separated by 
+"&gt;". The second integer can be omitted, in that case it denotes the 
+end of the list. If both integers are omitted (i.e. "&gt;" alone), this 
+denotes by convention the empty slice at the end of the list. Indexes 
+start at 0.
+        </p>
+
+        <p>
+          The following example shows the syntax for appending elements to a list:
+        </p>
+
+        <div class="example"><div class="example-title"><span>Example 10</span></div><pre class="example">UpdateList &lt;#&gt; ex:preferredLanguages &gt; ( "fr-CH" ) .</pre></div>
+
+        <p>
+          In this final example, we replace all the elements after index 2 with the provided list:
+        </p>
+
+        <div class="example"><div class="example-title"><span>Example 11</span></div><pre class="example">UpdateList &lt;#&gt; ex:preferredLanguages 2&gt; ( "fr-CH" ) .</pre></div>
+
+
+      </section>
+
+    </section>
+
+
+    <section rel="bibo:Chapter" resource="#concrete-syntax" typeof="bibo:Chapter" id="concrete-syntax">
+      <!--OddPage--><h2 id="h2_concrete-syntax" role="heading" aria-level="1"><span class="secno">3. </span>Concrete Syntax</h2>
+      <p>
+      </p>
+      <pre><dfn id="dfn-ldpatch" title="LDPatch">LDPatch</dfn> ::= Prologue Statement*
+<dfn id="dfn-prologue" title="Prologue">Prologue</dfn> ::= <a href="#dfn-prefixid" title="prefixID" class="tref internalDFN">prefixID</a>*
+<dfn id="dfn-statement" title="Statement">Statement</dfn> ::= <a href="#dfn-bind" title="Bind" class="tref internalDFN">Bind</a> | <a href="#dfn-add" title="Add" class="tref internalDFN">Add</a> | <a href="#dfn-delete" title="Delete" class="tref internalDFN">Delete</a> | <a href="#dfn-updatelist" title="UpdateList" class="tref internalDFN">UpdateList</a>
+<a href="#dfn-bind" title="Bind" class="tref internalDFN">Bind</a> ::= ("Bind" | "B") <a href="#dfn-var" title="Var" class="tref internalDFN">Var</a> <a href="#dfn-value" title="Value" class="tref internalDFN">Value</a> <a href="#dfn-path" title="Path" class="tref internalDFN">Path</a>? "."
+<a href="#dfn-add" title="Add" class="tref internalDFN">Add</a> ::= ("Add" | "A") <a href="#dfn-subject" title="Subject" class="tref internalDFN">Subject</a> <a href="#dfn-predicate" title="Predicate" class="tref internalDFN">Predicate</a> ( <a href="#dfn-object" title="Object" class="tref internalDFN">Object</a> | <a href="#dfn-list" title="List" class="tref internalDFN">List</a> ) "."
+<a href="#dfn-delete" title="Delete" class="tref internalDFN">Delete</a> ::= ("Delete" | "D") <a href="#dfn-subject" title="Subject" class="tref internalDFN">Subject</a> <a href="#dfn-predicate" title="Predicate" class="tref internalDFN">Predicate</a> <a href="#dfn-object" title="Object" class="tref internalDFN">Object</a> "."
+<a href="#dfn-updatelist" title="UpdateList" class="tref internalDFN">UpdateList</a> ::= ("UpdateList" | "UL") <a href="#dfn-subject" title="Subject" class="tref internalDFN">Subject</a> <a href="#dfn-predicate" title="Predicate" class="tref internalDFN">Predicate</a> <a href="#dfn-slice" title="Slice" class="tref internalDFN">Slice</a> <a href="#dfn-list" title="List" class="tref internalDFN">List</a> "."
+
+<dfn id="dfn-subject" title="Subject">Subject</dfn> ::= <a href="#dfn-iri" title="iri" class="tref internalDFN">iri</a> | <a href="#dfn-blanknode" title="BlankNode" class="tref internalDFN">BlankNode</a> | <a href="#dfn-var" title="Var" class="tref internalDFN">Var</a>
+<dfn id="dfn-predicate" title="Predicate">Predicate</dfn> ::= <a href="#dfn-iri" title="iri" class="tref internalDFN">iri</a>
+<dfn id="dfn-object" title="Object">Object</dfn> ::= <a href="#dfn-iri" title="iri" class="tref internalDFN">iri</a> | <a href="#dfn-blanknode" title="BlankNode" class="tref internalDFN">BlankNode</a> | <a href="#dfn-literal" title="literal" class="tref internalDFN">literal</a> | <a href="#dfn-var" title="Var" class="tref internalDFN">Var</a>
+<dfn id="dfn-value" title="Value">Value</dfn> ::= <a href="#dfn-iri" title="iri" class="tref internalDFN">iri</a> | <a href="#dfn-literal" title="literal" class="tref internalDFN">literal</a> | <a href="#dfn-var" title="Var" class="tref internalDFN">Var</a>
+<dfn id="dfn-list" title="List">List</dfn> ::= '(' <a href="#dfn-object" title="Object" class="tref internalDFN">Object</a>* ')'
+
+<a href="#dfn-path" title="Path" class="tref internalDFN">Path</a> ::= ( <a href="#dfn-step" title="Step" class="tref internalDFN">Step</a> | <a href="#dfn-constraint" title="Constraint" class="tref internalDFN">Constraint</a> )*
+<dfn id="dfn-step" title="Step">Step</dfn> ::= '/' ( '-' <a href="#dfn-iri" title="iri" class="tref internalDFN">iri</a> | <a href="#dfn-iri" title="iri" class="tref internalDFN">iri</a> | <a href="#dfn-index" title="INDEX" class="tref internalDFN">INDEX</a> )
+<dfn id="dfn-constraint" title="Constraint">Constraint</dfn> ::= '[' <a href="#dfn-path" title="Path" class="tref internalDFN">Path</a> ( '=' <a href="#dfn-value" title="Value" class="tref internalDFN">Value</a> )? ']' | '!'
+
+<dfn id="dfn-slice" title="Slice">Slice</dfn> ::= <a href="#dfn-index" title="INDEX" class="tref internalDFN">INDEX</a>? '&gt;' <a href="#dfn-index" title="INDEX" class="tref internalDFN">INDEX</a>?
+<dfn id="dfn-index" title="INDEX">INDEX</dfn> ::= [0-9]+
+
+// copied from SPARQL
+
+// supposed to be `Var ::= VAR1 | VAR2` but here only VAR1
+<a href="#dfn-var" title="Var" class="tref internalDFN">Var</a> ::= '?' <a href="#dfn-varname" title="VARNAME" class="tref internalDFN">VARNAME</a>
+<dfn id="dfn-varname" title="VARNAME">VARNAME</dfn> ::= ( <a href="#dfn-pn_chars_u" title="PN_CHARS_U" class="tref internalDFN">PN_CHARS_U</a> | [0-9] ) ( <a href="#dfn-pn_chars_u" title="PN_CHARS_U" class="tref internalDFN">PN_CHARS_U</a> | [0-9] | #x00B7 | [#x0300-#x036F] | [#x203F-#x2040] )*
+
+// copied from Turtle
+
+<dfn id="dfn-prefixid" title="prefixID">prefixID</dfn> ::= "@prefix" PNAME_NS IRIREF "."
+<a href="#dfn-literal" title="Literal" class="tref internalDFN">Literal</a> ::= <a href="#dfn-rdfliteral" title="RDFLiteral" class="tref internalDFN">RDFLiteral</a> | <a href="#dfn-numericliteral" title="NumericLiteral" class="tref internalDFN">NumericLiteral</a> | <a href="#dfn-booleanliteral" title="BooleanLiteral" class="tref internalDFN">BooleanLiteral</a>
+<dfn id="dfn-numericliteral" title="NumericLiteral">NumericLiteral</dfn> ::= <a href="#dfn-integer" title="INTEGER" class="tref internalDFN">INTEGER</a> | <a href="#dfn-decimal" title="DECIMAL" class="tref internalDFN">DECIMAL</a> | <a href="#dfn-double" title="DOUBLE" class="tref internalDFN">DOUBLE</a>
+<dfn id="dfn-rdfliteral" title="RDFLiteral">RDFLiteral</dfn> ::= <a href="#dfn-string" title="String" class="tref internalDFN">String</a> (<a href="#dfn-langtag" title="LANGTAG" class="tref internalDFN">LANGTAG</a> | '^^' <a href="#dfn-iri" title="iri" class="tref internalDFN">iri</a>)?
+<dfn id="dfn-booleanliteral" title="BooleanLiteral">BooleanLiteral</dfn> ::= 'true' | 'false'
+<a href="#dfn-string" title="String" class="tref internalDFN">String</a> ::= <a href="#dfn-string_literal_quote" title="STRING_LITERAL_QUOTE" class="tref internalDFN">STRING_LITERAL_QUOTE</a> | <a href="#dfn-string_literal_single_quote" title="STRING_LITERAL_SINGLE_QUOTE" class="tref internalDFN">STRING_LITERAL_SINGLE_QUOTE</a> | <a href="#dfn-string_literal_long_single_quote" title="STRING_LITERAL_LONG_SINGLE_QUOTE" class="tref internalDFN">STRING_LITERAL_LONG_SINGLE_QUOTE</a> | <a href="#dfn-string_literal_long_quote" title="STRING_LITERAL_LONG_QUOTE" class="tref internalDFN">STRING_LITERAL_LONG_QUOTE</a>
+<a href="#dfn-iri" title="iri" class="tref internalDFN">iri</a> ::= <a href="#dfn-iriref" title="IRIREF" class="tref internalDFN">IRIREF</a> | <a href="#dfn-prefixedname" title="PrefixedName" class="tref internalDFN">PrefixedName</a>
+<dfn id="dfn-prefixedname" title="PrefixedName">PrefixedName</dfn> ::= <a href="#dfn-pname_ln" title="PNAME_LN" class="tref internalDFN">PNAME_LN</a> | <a href="#dfn-pname_ns" title="PNAME_NS" class="tref internalDFN">PNAME_NS</a>
+<a href="#dfn-blanknode" title="BlankNode" class="tref internalDFN">BlankNode</a> ::= <a href="#dfn-blank_node_label" title="BLANK_NODE_LABEL" class="tref internalDFN">BLANK_NODE_LABEL</a> | <a href="#dfn-anon" title="ANON" class="tref internalDFN">ANON</a>
+<dfn id="dfn-iriref" title="IRIREF">IRIREF</dfn> ::= '&lt;' ([^#x00-#x20&lt;&gt;"{}|^`\] | <a href="#dfn-uchar" title="UCHAR" class="tref internalDFN">UCHAR</a>)* '&gt;' /* #x00=NULL #01-#x1F=control codes #x20=space */
+<dfn id="dfn-pname_ns" title="PNAME_NS">PNAME_NS</dfn> ::= <a href="#dfn-pn_prefix" title="PN_PREFIX" class="tref internalDFN">PN_PREFIX</a>? ':'
+<dfn id="dfn-pname_ln" title="PNAME_LN">PNAME_LN</dfn> ::= <a href="#dfn-pname_ns" title="PNAME_NS" class="tref internalDFN">PNAME_NS</a> <a href="#dfn-pn_local" title="PN_LOCAL" class="tref internalDFN">PN_LOCAL</a>
+<dfn id="dfn-blank_node_label" title="BLANK_NODE_LABEL">BLANK_NODE_LABEL</dfn> ::= '_:' (<a href="#dfn-pn_chars_u" title="PN_CHARS_U" class="tref internalDFN">PN_CHARS_U</a> | [0-9]) ((<a href="#dfn-pn_chars" title="PN_CHARS" class="tref internalDFN">PN_CHARS</a> | '.')* <a href="#dfn-pn_chars" title="PN_CHARS" class="tref internalDFN">PN_CHARS</a>)?
+<dfn id="dfn-langtag" title="LANGTAG">LANGTAG</dfn> ::= '@' [a-zA-Z]+ ('-' [a-zA-Z0-9]+)*
+<dfn id="dfn-integer" title="INTEGER">INTEGER</dfn> ::= [+-]? [0-9]+
+<dfn id="dfn-decimal" title="DECIMAL">DECIMAL</dfn> ::= [+-]? [0-9]* '.' [0-9]+
+<dfn id="dfn-double" title="DOUBLE">DOUBLE</dfn> ::= [+-]? ([0-9]+ '.' [0-9]* <a href="#dfn-exponent" title="EXPONENT" class="tref internalDFN">EXPONENT</a> | '.' [0-9]+ <a href="#dfn-exponent" title="EXPONENT" class="tref internalDFN">EXPONENT</a> | [0-9]+ <a href="#dfn-exponent" title="EXPONENT" class="tref internalDFN">EXPONENT</a>)
+<dfn id="dfn-exponent" title="EXPONENT">EXPONENT</dfn> ::= [eE] [+-]? [0-9]+
+<dfn id="dfn-string_literal_quote" title="STRING_LITERAL_QUOTE">STRING_LITERAL_QUOTE</dfn> ::= '"' ([^#x22#x5C#xA#xD] | <a href="#dfn-echar" title="ECHAR" class="tref internalDFN">ECHAR</a> | <a href="#dfn-uchar" title="UCHAR" class="tref internalDFN">UCHAR</a>)* '"'      /* #x22=" #x5C=\ #xA=new line #xD=carriage return */
+<dfn id="dfn-string_literal_single_quote" title="STRING_LITERAL_SINGLE_QUOTE">STRING_LITERAL_SINGLE_QUOTE</dfn> ::= "'" ([^#x27#x5C#xA#xD] | <a href="#dfn-echar" title="ECHAR" class="tref internalDFN">ECHAR</a> | <a href="#dfn-uchar" title="UCHAR" class="tref internalDFN">UCHAR</a>)* "'"      /* #x27=' #x5C=\ #xA=new line #xD=carriage return */
+<dfn id="dfn-string_literal_long_single_quote" title="STRING_LITERAL_LONG_SINGLE_QUOTE">STRING_LITERAL_LONG_SINGLE_QUOTE</dfn> ::= "'''" (("'" | "''")? ([^'\] | <a href="#dfn-echar" title="ECHAR" class="tref internalDFN">ECHAR</a> | <a href="#dfn-uchar" title="UCHAR" class="tref internalDFN">UCHAR</a>))* "'''"
+<dfn id="dfn-string_literal_long_quote" title="STRING_LITERAL_LONG_QUOTE">STRING_LITERAL_LONG_QUOTE</dfn> ::= '"""' (('"' | '""')? ([^"\] | <a href="#dfn-echar" title="ECHAR" class="tref internalDFN">ECHAR</a> | <a href="#dfn-uchar" title="UCHAR" class="tref internalDFN">UCHAR</a>))* '"""'
+<dfn id="dfn-uchar" title="UCHAR">UCHAR</dfn> ::= '\\u' <a href="#dfn-hex" title="HEX" class="tref internalDFN">HEX</a> <a href="#dfn-hex" title="HEX" class="tref internalDFN">HEX</a> <a href="#dfn-hex" title="HEX" class="tref internalDFN">HEX</a> <a href="#dfn-hex" title="HEX" class="tref internalDFN">HEX</a> | '\\U' <a href="#dfn-hex" title="HEX" class="tref internalDFN">HEX</a> <a href="#dfn-hex" title="HEX" class="tref internalDFN">HEX</a> <a href="#dfn-hex" title="HEX" class="tref internalDFN">HEX</a> <a href="#dfn-hex" title="HEX" class="tref internalDFN">HEX</a> <a href="#dfn-hex" title="HEX" class="tref internalDFN">HEX</a> <a href="#dfn-hex" title="HEX" class="tref internalDFN">HEX</a> <a href="#dfn-hex" title="HEX" class="tref internalDFN">HEX</a> <a href="#dfn-hex" title="HEX" class="tref internalDFN">HEX</a>
+<dfn id="dfn-echar" title="ECHAR">ECHAR</dfn> ::= '\' [tbnrf"'\]
+<dfn id="dfn-ws" title="WS">WS</dfn> ::= #x20 | #x9 | #xD | #xA /* #x20=space #x9=character tabulation #xD=carriage return #xA=new line */
+<dfn id="dfn-anon" title="ANON">ANON</dfn> ::= '[' <a href="#dfn-ws" title="WS" class="tref internalDFN">WS</a>* ']'
+<dfn id="dfn-pn_chars_base" title="PN_CHARS_BASE">PN_CHARS_BASE</dfn> ::= [A-Z] | [a-z] | [#x00C0-#x00D6] | [#x00D8-#x00F6] | [#x00F8-#x02FF] | [#x0370-#x037D] | [#x037F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
+<dfn id="dfn-pn_chars_u" title="PN_CHARS_U">PN_CHARS_U</dfn> ::= <a href="#dfn-pn_chars_base" title="PN_CHARS_BASE" class="tref internalDFN">PN_CHARS_BASE</a> | '_'
+<dfn id="dfn-pn_chars" title="PN_CHARS">PN_CHARS</dfn> ::= <a href="#dfn-pn_chars_u" title="PN_CHARS_U" class="tref internalDFN">PN_CHARS_U</a> | '-' | [0-9] | #x00B7 | [#x0300-#x036F] | [#x203F-#x2040]
+<dfn id="dfn-pn_prefix" title="PN_PREFIX">PN_PREFIX</dfn> ::= <a href="#dfn-pn_chars_base" title="PN_CHARS_BASE" class="tref internalDFN">PN_CHARS_BASE</a> ((<a href="#dfn-pn_chars" title="PN_CHARS" class="tref internalDFN">PN_CHARS</a> | '.')* <a href="#dfn-pn_chars" title="PN_CHARS" class="tref internalDFN">PN_CHARS</a>)?
+<dfn id="dfn-pn_local" title="PN_LOCAL">PN_LOCAL</dfn> ::= (<a href="#dfn-pn_chars_u" title="PN_CHARS_U" class="tref internalDFN">PN_CHARS_U</a> | ':' | [0-9] | <a href="#dfn-plx" title="PLX" class="tref internalDFN">PLX</a>) ((<a href="#dfn-pn_chars" title="PN_CHARS" class="tref internalDFN">PN_CHARS</a> | '.' | ':' | <a href="#dfn-plx" title="PLX" class="tref internalDFN">PLX</a>)* (<a href="#dfn-pn_chars" title="PN_CHARS" class="tref internalDFN">PN_CHARS</a> | ':' | <a href="#dfn-plx" title="PLX" class="tref internalDFN">PLX</a>))?
+<dfn id="dfn-plx" title="PLX">PLX</dfn> ::= <a href="#dfn-percent" title="PERCENT" class="tref internalDFN">PERCENT</a> | <a href="#dfn-pn_local_esc" title="PN_LOCAL_ESC" class="tref internalDFN">PN_LOCAL_ESC</a>
+<dfn id="dfn-percent" title="PERCENT">PERCENT</dfn> ::= '%' <a href="#dfn-hex" title="HEX" class="tref internalDFN">HEX</a> <a href="#dfn-hex" title="HEX" class="tref internalDFN">HEX</a>
+<dfn id="dfn-hex" title="HEX">HEX</dfn> ::= [0-9] | [A-F] | [a-f]
+<dfn id="dfn-pn_local_esc" title="PN_LOCAL_ESC">PN_LOCAL_ESC</dfn> ::= '\' ('_' | '~' | '.' | '-' | '!' | '$' | '&amp;' | "'" | '(' | ')' | '*' | '+' | ',' | ';' | '=' | '/' | '?' | '#' | '@' | '%')
+      </pre>
+    </section>
+
+    <section rel="bibo:Chapter" resource="#abstract-syntax" typeof="bibo:Chapter" id="abstract-syntax">
+      <!--OddPage--><h2 id="h2_abstract-syntax" role="heading" aria-level="1"><span class="secno">4. </span>Abstract Syntax</h2>
+      <p>
+The LD Patch data model makes use of the commonly defined <a href="http://en.wikipedia.org/wiki/Abstract_data_type">Abstract Data Types</a> <a href="http://en.wikipedia.org/wiki/Set_%28computer_science%29">Set</a>, <a href="http://en.wikipedia.org/wiki/List_%28computer_science%29">List</a> and <a href="http://en.wikipedia.org/wiki/Option_type">Option</a>, used here as type constructors. For example, <code>Set(A)</code> denotes the type for the sets of elements of type <code>A</code>. <!--We assume that they come with their common operations, such as the function <code>size&nbsp;:&nbsp;Set&nbsp;→&nbsp;Int</code>.-->				
+      </p>
+      <pre><a href="#dfn-ldpatch" title="LDPatch" class="tref internalDFN">LDPatch</a> ::= <a href="#dfn-list" title="List" class="tref internalDFN">List</a>(<a href="#dfn-statement" title="Statement" class="tref internalDFN">Statement</a>)
+
+<a href="#dfn-statement" title="Statement" class="tref internalDFN">Statement</a> ::= <a href="#dfn-add" title="Add" class="tref internalDFN">Add</a> | <a href="#dfn-addlist" title="AddList" class="tref internalDFN">AddList</a> | <a href="#dfn-delete" title="Delete" class="tref internalDFN">Delete</a> | <a href="#dfn-bind" title="Bind" class="tref internalDFN">Bind</a> | <a href="#dfn-updatelist" title="UpdateList" class="tref internalDFN">UpdateList</a>
+<a href="#dfn-add" title="Add" class="tref internalDFN">Add</a>       ::= (<a href="#dfn-subject" title="Subject" class="tref internalDFN">Subject</a>, <a href="#dfn-predicate" title="Predicate" class="tref internalDFN">Predicate</a>, <a href="#dfn-object" title="Object" class="tref internalDFN">Object</a>)
+<dfn id="dfn-addlist" title="AddList">AddList</dfn>   ::= (<a href="#dfn-subject" title="Subject" class="tref internalDFN">Subject</a>, <a href="#dfn-predicate" title="Predicate" class="tref internalDFN">Predicate</a>, <a href="#dfn-list" title="List" class="tref internalDFN">List</a>(<a href="#dfn-object" title="Object" class="tref internalDFN">Object</a>))
+<a href="#dfn-delete" title="Delete" class="tref internalDFN">Delete</a>    ::= (<a href="#dfn-subject" title="Subject" class="tref internalDFN">Subject</a>, <a href="#dfn-predicate" title="Predicate" class="tref internalDFN">Predicate</a>, <a href="#dfn-object" title="Object" class="tref internalDFN">Object</a>)
+<a href="#dfn-bind" title="Bind" class="tref internalDFN">Bind</a>      ::= (<a href="#dfn-var" title="Var" class="tref internalDFN">Var</a>, <a href="#dfn-value" title="Value" class="tref internalDFN">Value</a>, <a href="#dfn-path" title="Path" class="tref internalDFN">Path</a>)
+<a href="#dfn-updatelist" title="UpdateList" class="tref internalDFN">UpdateList</a>   ::= (<a href="#dfn-subject" title="Subject" class="tref internalDFN">Subject</a>, <a href="#dfn-predicate" title="Predicate" class="tref internalDFN">Predicate</a>, <a href="#dfn-slice" title="Slice" class="tref internalDFN">Slice</a>, <a href="#dfn-list" title="List" class="tref internalDFN">List</a>(<a href="#dfn-object" title="Object" class="tref internalDFN">Object</a>))
+
+<dfn id="dfn-path" title="Path">Path</dfn>         ::= <a href="#dfn-list" title="List" class="tref internalDFN">List</a>(<a href="#dfn-pathelement" title="PathElement" class="tref internalDFN">PathElement</a>)
+<dfn id="dfn-pathelement" title="PathElement">PathElement</dfn>  ::= <a href="#dfn-step" title="Step" class="tref internalDFN">Step</a> | <a href="#dfn-constraint" title="Constraint" class="tref internalDFN">Constraint</a>
+<a href="#dfn-step" title="Step" class="tref internalDFN">Step</a>         ::= <a href="#dfn-stepforward" title="StepForward" class="tref internalDFN">StepForward</a> | <a href="#dfn-stepbackward" title="StepBackward" class="tref internalDFN">StepBackward</a> | <a href="#dfn-stepat" title="StepAt" class="tref internalDFN">StepAt</a>
+<a href="#dfn-constraint" title="Constraint" class="tref internalDFN">Constraint</a>   ::= <a href="#dfn-filter" title="Filter" class="tref internalDFN">Filter</a> | UNICITY_CONSTRAINT
+<dfn id="dfn-stepforward" title="StepForward">StepForward</dfn>  ::= <a href="#dfn-iri" title="IRI" class="tref internalDFN">IRI</a>
+<dfn id="dfn-stepbackward" title="StepBackward">StepBackward</dfn> ::= <a href="#dfn-iri" title="IRI" class="tref internalDFN">IRI</a>
+<dfn id="dfn-stepat" title="StepAt">StepAt</dfn>       ::= <a href="#dfn-integer" title="Integer" class="tref internalDFN">Integer</a>
+<dfn id="dfn-filter" title="Filter">Filter</dfn>       ::= (<a href="#dfn-path" title="Path" class="tref internalDFN">Path</a>, Option(<a href="#dfn-value" title="Value" class="tref internalDFN">Value</a>))
+
+<a href="#dfn-slice" title="Slice" class="tref internalDFN">Slice</a>            ::= <a href="#dfn-range" title="Range" class="tref internalDFN">Range</a> | <a href="#dfn-everythingafter" title="EverythingAfter" class="tref internalDFN">EverythingAfter</a> | END
+<dfn id="dfn-range" title="Range">Range</dfn>            ::= (<a href="#dfn-integer" title="Integer" class="tref internalDFN">Integer</a>, <a href="#dfn-integer" title="Integer" class="tref internalDFN">Integer</a>)
+<dfn id="dfn-everythingafter" title="EverythingAfter">EverythingAfter</dfn>  ::= <a href="#dfn-integer" title="Integer" class="tref internalDFN">Integer</a>
+
+<a href="#dfn-subject" title="Subject" class="tref internalDFN">Subject</a>   ::= <a href="#dfn-iri" title="IRI" class="tref internalDFN">IRI</a> | <a href="#dfn-blanknode" title="BlankNode" class="tref internalDFN">BlankNode</a> | <a href="#dfn-var" title="Var" class="tref internalDFN">Var</a>
+<a href="#dfn-predicate" title="Predicate" class="tref internalDFN">Predicate</a> ::= <a href="#dfn-iri" title="IRI" class="tref internalDFN">IRI</a>
+<a href="#dfn-object" title="Object" class="tref internalDFN">Object</a>    ::= <a href="#dfn-iri" title="IRI" class="tref internalDFN">IRI</a> | <a href="#dfn-blanknode" title="BlankNode" class="tref internalDFN">BlankNode</a> | <a href="#dfn-literal" title="Literal" class="tref internalDFN">Literal</a> | <a href="#dfn-var" title="Var" class="tref internalDFN">Var</a>
+<a href="#dfn-value" title="Value" class="tref internalDFN">Value</a>     ::= <a href="#dfn-iri" title="IRI" class="tref internalDFN">IRI</a> | <a href="#dfn-literal" title="Literal" class="tref internalDFN">Literal</a> | <a href="#dfn-var" title="Var" class="tref internalDFN">Var</a>
+
+<dfn id="dfn-var" title="Var">Var</dfn>       ::= <a href="#dfn-string" title="String" class="tref internalDFN">String</a>
+<dfn id="dfn-iri" title="IRI">IRI</dfn>       ::= RDF URI-reference http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#section-IRIs as subsequently restricted by SPARQL http://www.w3.org/TR/rdf-sparql-query/#docTerminology
+<dfn id="dfn-blanknode" title="BlankNode">BlankNode</dfn> ::= RDF blank node http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#section-blank-nodes
+<dfn id="dfn-literal" title="Literal">Literal</dfn>   ::= RDF Literal http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#section-Graph-Literal
+<dfn id="dfn-string" title="String">String</dfn>    ::= a Unicode String
+      </pre>
+
+    </section>
+    
+    <section rel="bibo:Chapter" resource="#operational-semantics" typeof="bibo:Chapter" id="operational-semantics">
+      <!--OddPage--><h2 id="h2_operational-semantics" role="heading" aria-level="1"><span class="secno">5. </span>Operational Semantics</h2>
+
+      <p>
+        LD Patch abides to the semantics of the <a href="http://tools.ietf.org/html/rfc5789" target="_blank">HTTP PATCH method</a>, in that the server <em title="MUST" class="rfc2119">MUST</em>
+ apply the entire set of changes atomically and never provide (e.g., in 
+response to a GET during this operation) a partially modified 
+representation. If the entire patch document cannot be successfully 
+applied (e.g., one of the instructions has failed), then the server <em title="MUST NOT" class="rfc2119">MUST NOT</em> apply any of the changes.
+      </p>
+
+      <p>
+      </p>
+
+      <h2 id="generatedID"></h2>
+
+      <!-- p>The formal semantics of a statement is a function from state to state. That state carries the current graph and a map from variables to RDF nodes. The semantics of an LD Patch document is defined by applying its statements in order while carrying the state. The initial state is made of the original graph and of an empty mapping. If no runtime errors occurs, the final state has the final value of the graph.</p>
+
+      <p>The semantics of a Subject, an Object and Value a ground RDF node ie. it is itself if it is a RDF node, or its value in the map if it is a variable. The semantics of all the statements, including Bind, is defined on ground terms.</p>
+
+      <p>The semantics of Bind is defined by evaluating the path on the starting node, and adding a binding from the variable to the result.</p>
+
+      <p>The semantics of Add is defined by adding the triple made of the (Subject, Predicate, Object) to the current graph.</p>
+
+      <p>The semantics of AddList is defined by adding the triple made of the (Subject, Predicate, Object) to the current graph.</p>
+
+      <p>The semantics of Delete is defined by removing the triple made of the (Subject, Predicate, Object) from the current graph.</p>
+
+      <p></p-->
+
+      <p>TODO</p>
+
+
+        
+    </section>
+    
+
+  
+
+<div style="position: fixed; top: 20px; right: 20px; width: 202px; text-align: right;" id="respec-ui" class="removeOnSave"><button style="background: none repeat scroll 0% 0% rgb(255, 255, 255); font-weight: bold; border: 1px solid rgb(204, 204, 204); border-radius: 5px;">ReSpec</button><div style="background: none repeat scroll 0% 0% rgb(255, 255, 255); border: 1px solid rgb(0, 0, 0); width: 200px; display: none; text-align: left; margin-top: 5px; margin-right: 5px;"><button style="background: none repeat scroll 0% 0% rgb(255, 255, 255); border-width: medium medium 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(204, 204, 204); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; width: 100%; text-align: left; font-size: inherit;">Save Snapshot</button><button style="background: none repeat scroll 0% 0% rgb(255, 255, 255); border-width: medium medium 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(204, 204, 204); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; width: 100%; text-align: left; font-size: inherit;">About ReSpec</button><button style="background: none repeat scroll 0% 0% rgb(255, 255, 255); border-width: medium medium 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color rgb(204, 204, 204); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; width: 100%; text-align: left; font-size: inherit;">Search Specref DB</button></div></div></body></html>
