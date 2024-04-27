@@ -29,7 +29,7 @@ url: "https://jasonzou.github.io" # the base hostname & protocol for your site, 
 github_username:  jasonzou
 
 # Build settings
-theme: minima
+theme: midnight 
 plugins:
   - jekyll-feed
 
