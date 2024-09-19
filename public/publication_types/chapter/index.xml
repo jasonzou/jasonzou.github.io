@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Chapter | Dr. Qing (Jason) Zou&#39;s homepage</title>
+    <link>http://localhost:1313/publication_types/chapter/</link>
+      <atom:link href="http://localhost:1313/publication_types/chapter/index.xml" rel="self" type="application/rss+xml" />
+    <description>Chapter</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Thu, 01 Jan 2015 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>http://localhost:1313/media/icon_hu7729264130191091259.png</url>
+      <title>Chapter</title>
+      <link>http://localhost:1313/publication_types/chapter/</link>
+    </image>
+    
+    <item>
+      <title>Trust and Trust building of virtual Communities in the networked age</title>
+      <link>http://localhost:1313/publication/zou-2015-trust/</link>
+      <pubDate>Thu, 01 Jan 2015 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/publication/zou-2015-trust/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Understanding Trust in Virtual Communities: Revisited</title>
+      <link>http://localhost:1313/publication/zou-2011-understanding/</link>
+      <pubDate>Sat, 01 Jan 2011 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/publication/zou-2011-understanding/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
