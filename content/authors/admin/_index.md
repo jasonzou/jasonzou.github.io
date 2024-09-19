@@ -39,9 +39,11 @@ profiles:
     url: https://orcid.org/0000-0002-1908-4270
 
 interests:
-  - Artificial Intelligence
-  - Computational Linguistics
+  - Artificial Intelligence in digital libraries and archives
   - Information Retrieval
+  - Ontology
+  - Information Organization
+  - Knowledge Organization Systems
 
 education:
   - area: PhD Information Studies 
